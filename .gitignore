@@ -21,6 +21,3 @@ server.pid
 *.iml
 *.eml
 activator*.sbt
-
-activator
-activator.bat
