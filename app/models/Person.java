@@ -1,5 +1,8 @@
 package models;
 
+import org.springframework.data.neo4j.annotation.GraphId;
+import org.springframework.data.neo4j.annotation.NodeEntity;
+
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
@@ -10,10 +13,10 @@ import javax.persistence.Id;
  * associated with collections of these model objects belong to the PersonRepository e.g. findOne, findAll etc.
  * Play Java will synthesise getter and setter methods for us and therefore keep JPA happy (JPA expects them).
  */
-@Entity
+@NodeEntity
 public class Person {
-    @Id
-    @GeneratedValue
+
+    @GraphId
     public Long id;
 
     public String firstname;

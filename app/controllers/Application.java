@@ -1,7 +1,7 @@
 package controllers;
 
 import models.Person;
-import models.PersonRepository;
+import repositories.PersonRepository;
 import play.mvc.*;
 
 import javax.inject.Inject;

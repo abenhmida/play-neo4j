@@ -1,14 +1,12 @@
+import org.neo4j.graphdb.GraphDatabaseService;
+import org.neo4j.graphdb.factory.GraphDatabaseFactory;
 import org.springframework.context.annotation.AnnotationConfigApplicationContext;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
-import org.springframework.data.jpa.repository.config.EnableJpaRepositories;
-import org.springframework.orm.hibernate3.HibernateExceptionTranslator;
-import org.springframework.orm.jpa.JpaTransactionManager;
+import org.springframework.data.neo4j.config.EnableNeo4jRepositories;
+import org.springframework.data.neo4j.config.Neo4jConfiguration;
 import play.Application;
 import play.GlobalSettings;
-
-import javax.persistence.EntityManagerFactory;
-import javax.persistence.Persistence;
 
 /**
  * Application wide behaviour. We establish a Spring application context for the dependency injection system and
@@ -68,22 +66,15 @@ public class Global extends GlobalSettings {
      * This configuration establishes Spring Data concerns including those of JPA.
      */
     @Configuration
-    @EnableJpaRepositories("models")
-    public static class SpringDataJpaConfiguration {
-
-        @Bean
-        public EntityManagerFactory entityManagerFactory() {
-            return Persistence.createEntityManagerFactory(DEFAULT_PERSISTENCE_UNIT);
+    @EnableNeo4jRepositories(basePackages = {"repositories"})
+    public static class SpringDataJpaConfiguration extends Neo4jConfiguration {
+        public SpringDataJpaConfiguration() {
+            setBasePackage("models");
         }
 
         @Bean
-        public HibernateExceptionTranslator hibernateExceptionTranslator() {
-            return new HibernateExceptionTranslator();
-        }
-
-        @Bean
-        public JpaTransactionManager transactionManager() {
-            return new JpaTransactionManager();
+        public GraphDatabaseService graphDatabaseService() {
+            return new GraphDatabaseFactory().newEmbeddedDatabase("path/to/mydb");
         }
     }
 }
